@@ -2,6 +2,7 @@ package coderbyte.mars;
 
 import coderbyte.mars.exception.MoveNotPossibleException;
 import javax.naming.OperationNotSupportedException;
+import org.apache.commons.lang3.StringUtils;
 
 public class Rover {
 
@@ -18,6 +19,7 @@ public class Rover {
     this.orientation = orientation;
   }
 
+
   public void setSizeX(int sizeX) {
     this.sizeX = sizeX;
   }
@@ -26,17 +28,41 @@ public class Rover {
     this.sizeY = sizeY;
   }
 
+  public void setCoordonateX(int coordonateX) {
+    this.coordonateX = coordonateX;
+  }
+
+  public void setCoordonateY(int coordonateY) {
+    this.coordonateY = coordonateY;
+  }
+
+  public void setOrientation(Orientation orientation) {
+    this.orientation = orientation;
+  }
+
+  public int getCoordonateX() {
+    return coordonateX;
+  }
+
+  public int getCoordonateY() {
+    return coordonateY;
+  }
+
+  public Orientation getOrientation() {
+    return orientation;
+  }
+
   public void move() {
     validateMove();
     switch (orientation) {
       case E:
-        coordonateX--;
+        coordonateX++;
         break;
       case S:
         coordonateY--;
         break;
       case W:
-        coordonateX++;
+        coordonateX--;
         break;
       case N:
         coordonateY++;
@@ -68,16 +94,16 @@ public class Rover {
   public void turnRight() {
     switch (orientation) {
       case E:
-        orientation = Orientation.N;
-        break;
-      case S:
-        orientation = Orientation.E;
-        break;
-      case W:
         orientation = Orientation.S;
         break;
-      case N:
+      case S:
         orientation = Orientation.W;
+        break;
+      case W:
+        orientation = Orientation.N;
+        break;
+      case N:
+        orientation = Orientation.E;
         break;
       default:
         break;
@@ -85,20 +111,28 @@ public class Rover {
   }
 
   public void executeCommand(String command) throws OperationNotSupportedException {
-    for (int i=0; i < command.length(); i++) {
-      char singleCommandCode = command.charAt(i);
-      switch (singleCommandCode) {
-        case 'L':
-          turnLeft();
-          break;
-        case 'R':
-          turnRight();
-          break;
-        case 'M':
-          move();
-        default:
-          throw new OperationNotSupportedException(String.format("Command not supported. Command:" + singleCommandCode));
+    if (StringUtils.isNotBlank(command)) {
+      for (int i = 0; i < command.length(); i++) {
+        char singleCommandCode = command.charAt(i);
+        System.out.println(prettyStatus());
+        System.out.println("Executing command: " + singleCommandCode);
+        switch (singleCommandCode) {
+          case 'L':
+            turnLeft();
+            break;
+          case 'R':
+            turnRight();
+            break;
+          case 'M':
+            move();
+            break;
+          default:
+            throw new OperationNotSupportedException(
+                String.format("Command not supported. Command:" + singleCommandCode));
+        }
       }
+    } else {
+      System.out.println("Null or blank command cannot be executed");
     }
   }
 
@@ -107,8 +141,17 @@ public class Rover {
         (coordonateX == sizeX && Orientation.E.equals(orientation)) ||
         (coordonateY == 0 && Orientation.S.equals(orientation)) ||
         (coordonateY == sizeY && Orientation.N.equals(orientation))) {
+      System.out.println("not possible from:" + coordonateX);
+      System.out.println("not possible from:" + coordonateY);
+      System.out.println("not possible from:" + orientation);
       throw new MoveNotPossibleException("move not possible");
     }
+  }
+
+  public String prettyStatus() {
+    final String status = String
+        .format("Rover having (%s,%s) facing %s", coordonateX, coordonateY, orientation);
+    return status;
   }
 
 }
