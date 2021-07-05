@@ -13,7 +13,7 @@ public class Plateau {
     this.sizeY = sizeY;
   }
 
-  private List<Rover> rovers = new ArrayList<>();
+  private List<Rovering> rover2DS = new ArrayList<>();
 
   public int getSizeX() {
     return sizeX;
@@ -23,7 +23,7 @@ public class Plateau {
     return sizeY;
   }
 
-  public List<Rover> getRovers() {
-    return rovers;
+  public List<Rovering> getRovers() {
+    return rover2DS;
   }
 }

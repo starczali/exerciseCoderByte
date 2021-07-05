@@ -4,7 +4,7 @@ import coderbyte.mars.exception.MoveNotPossibleException;
 import javax.naming.OperationNotSupportedException;
 import org.apache.commons.lang3.StringUtils;
 
-public class Rover {
+public class Rover2D extends AbstractRover {
 
   private int coordonateX;
   private int coordonateY;
@@ -13,7 +13,7 @@ public class Rover {
   private int sizeX = 5;
   private int sizeY = 5;
 
-  public Rover(int coordonateX, int coordonateY, Orientation orientation) {
+  public Rover2D(int coordonateX, int coordonateY, Orientation orientation) {
     this.coordonateX = coordonateX;
     this.coordonateY = coordonateY;
     this.orientation = orientation;
@@ -134,6 +134,11 @@ public class Rover {
     } else {
       System.out.println("Null or blank command cannot be executed");
     }
+  }
+
+  @Override
+  public Integer cost() {
+    return 1_000_000;
   }
 
   private void validateMove() {
